@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coco Verde</title>
+
+    <!-- Estilo CSS -->
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <!-- Iconos -->
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- js -->
+    <script defer src="/js/menuHamburguesa.js"></script>
+    <script defer src="/js/productoInfo.js"></script>
+    <script defer src="/js/productos.js"></script>
+  </head>
+  <body class="body-productosInfo">
+    <!-- Navbar -->
+
+    <header>
+      <nav class="navbar">
+        <div>
+          <button class="abrir" id="iconoAbrir">
+            <i class="bx bx-menu"></i>
+          </button>
+          <button class="cerrar" id="iconoCerrar">
+            <p>X</p>
+          </button>
+        </div>
+        <div class="logo">
+          <img src="/image/logo navbar.png" alt="Logo Coco Verde" />
+        </div>
+        <div class="nav-links" id="nav-links">
+          <a class="links" href="index.html#inicio">Inicio</a>
+          <a class="links" href="index.html#productos">Productos</a>
+          <a class="links" href="index.html#nosotros">Nosotros</a>
+          <a class="links" href="index.html#proximamente">Próximamente</a>
+        </div>
+        <div class="cart-icon"><i class="bx bx-cart"></i></div>
+      </nav>
+    </header>
+
+    <div class="container">
+      <div class="product">
+        <!-- Sección de la imagen -->
+        <div class="image-section">
+          <img
+            id="mainImage"
+            src="/image/remera 1.png"
+            alt="Remera Blanca"
+            class="main-image"
+          />
+          <div class="thumbnail-container">
+            <img
+              src="/image/remera 1.png"
+              alt="Remera Blanca"
+              class="thumbnail selected"
+              id="imagen1"
+            />
+            <img
+              src="/image/remera 1.png"
+              alt="Buzo"
+              class="thumbnail"
+              id="imagen2"
+            />
+            <img
+              src="/image/remera 1.png"
+              alt="Remera"
+              class="thumbnail"
+              id="imagen3"
+            />
+          </div>
+        </div>
+
+        <!-- Sección de detalles -->
+        <div class="details-section">
+          <div class="header">
+            <!-- Este es el h2 que cambiará -->
+            <h2 id="nombreProducto" class="name"><%= producto.nombre %></h2>
+            <p id="precioProducto" class="price">$<%= producto.precio %></p>
+            <p><%= producto.descripcion %></p>
+          </div>
+
+          <div class="options">
+            <div class="size">
+              <p>Talle:</p>
+              <% talles.forEach((talle) => { %>
+              <label>
+                <input type="radio" name="size" value="<%= talle.nombre %>" />
+                <%= talle.talle %>
+              </label>
+              <% }); %>
+            </div>
+
+            <div class="quantity">
+              <p>Cantidad:</p>
+              <button id="btnRestar" class="quantity-btn">-</button>
+              <input id="cantidad" type="number" value="1" min="1" max="4" />
+              <button id="btnSumar" class="quantity-btn">+</button>
+            </div>
+          </div>
+
+          <button
+            class="add-to-cart"
+            onclick="agregarAlCarrito('<%= producto.id %>')"
+          >
+            AGREGAR AL CARRITO
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Pie de página -->
+    <footer>
+      <p>&copy; 2024 Coco Verde. Todos los derechos reservados.</p>
+    </footer>
+    <script>
+      function agregarAlCarrito(productoId) {
+        const talleSeleccionado = document.querySelector(
+          'input[name="size"]:checked'
+        );
+        const cantidad = document.getElementById("cantidad").value;
+
+        if (!talleSeleccionado) {
+          alert("Por favor selecciona un talle.");
+          return;
+        }
+
+        fetch("/carrito/agregar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            productoId,
+            talle: talleSeleccionado.value,
+            cantidad,
+          }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              alert("Producto agregado al carrito");
+            } else {
+              alert("Error al agregar el producto al carrito");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Hubo un problema al agregar el producto al carrito.");
+          });
+      }
+    </script>
+  </body>
+</html>

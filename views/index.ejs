@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coco Verde</title>
+
+    <!-- Estilo CSS -->
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <!-- Iconos -->
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- js -->
+    <script defer src="/js/menuHamburguesa.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+
+    <header>
+      <nav class="navbar">
+        <div>
+          <button class="abrir" id="iconoAbrir">
+            <i class="bx bx-menu"></i>
+          </button>
+          <button class="cerrar" id="iconoCerrar">
+            <p>X</p>
+          </button>
+        </div>
+        <div class="logo">
+          <img src="/image/logo navbar.png" alt="Logo Coco Verde" />
+        </div>
+        <div class="nav-links" id="nav-links">
+          <a class="links" href="/">Inicio</a>
+          <a class="links" href="#productos">Productos</a>
+          <a class="links" href="#nosotros">Nosotros</a>
+          <a class="links" href="#proximamente">Próximamente</a>
+          <a class="links" href="/productos">Productos Todos</a>
+          <a class="links" href="/carrito">Carrito</a>
+          <a class="links" href="/registro">Registro</a>
+          <a class="links" href="/auth">inicio de sesion</a>
+        </div>
+        <div class="cart-icon"><i class="bx bx-cart"></i></div>
+      </nav>
+    </header>
+
+    <!-- Sección principal -->
+    <main>
+      <section id="inicio" class="main-section">
+        <div class="main-section__hijo">
+          <img class="main-section__img" src="/image/logo inicio.png" alt="" />
+          <p class="main-section__descripcion">Inconformes, queremos más</p>
+          <button class="main-section__boton">Productos</button>
+        </div>
+      </section>
+
+      <!-- Sección Productos -->
+      <section id="productos" class="productos-section">
+        <h2>Productos</h2>
+        <div class="productos-grid">
+          <div class="producto">
+            <% productos.forEach(producto => { %>
+            <a href="/productosinfo/<%= producto.id %>"
+              ><div class="producto">
+                <img class="remeraImg" src="/image/remera 1.png" alt="Remera" />
+                <p><%= producto.nombre %></p>
+                <p>Precio: $<%= producto.precio %></p>
+                <p><%= producto.descripcion %></p>
+                <button onclick="location.href='/productos'">Ver más</button>
+              </div></a
+            >
+            <% }); %>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seccion Proximos Drops -->
+      <section id="proximamente" class="drops-section">
+        <h2>Proximos Drops</h2>
+        <div class="drop-preview">
+          <img
+            class="drops-section__img"
+            src="/image/proximamente.png"
+            alt="proximos drops"
+          />
+          <p class="drops-section__p">Loading Drop...</p>
+        </div>
+      </section>
+
+      <!-- Sobre Nosotros -->
+      <section id="nosotros" class="nosotros-section">
+        <h2>Sobre Nosotros</h2>
+        <div class="nosotros-section__flex">
+          <p class="nosotros-section__p">
+            En Coco Verde, vivimos y respiramos el espíritu del streetwear.
+            Nacimos con la misión de ofrecer prendas que no solo sigan
+            tendencias, sino que expresen actitud, estilo y autenticidad.
+            Inspirados en la cultura urbana, nuestras colecciones combinan
+            comodidad, calidad y diseños únicos que te acompañan en cada paso de
+            tu día. <br />
+            Somos más que una tienda de ropa; somos una comunidad apasionada por
+            el arte, la música, el skate y todo lo que representa el movimiento
+            streetwear.<br />
+            Nos esforzamos por ofrecer piezas que te permitan destacar y contar
+            tu historia a través de lo que llevas puesto. En Coco Verde, cada
+            prenda es una declaración de libertad, creatividad y rebeldía. Únete
+            a nuestra familia y lleva contigo el espíritu de la calle, donde sea
+            que vayas.
+          </p>
+          <img src="/image/logo navbar.png" alt="Logo Coco Verde" />
+        </div>
+      </section>
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+      <p>&copy; 2024 Coco Verde. Todos los derechos reservados.</p>
+    </footer>
+  </body>
+</html>

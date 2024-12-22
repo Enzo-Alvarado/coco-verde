@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Productos</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <h1>Productos</h1>
+    <div class="productos">
+      <% productos.forEach(producto => { %>
+      <div class="producto">
+        <h2><%= producto.nombre %></h2>
+        <p>Precio: $<%= producto.precio %></p>
+        <button onclick="agregarAlCarrito('<%= producto.id %>')">
+          Agregar al carrito
+        </button>
+      </div>
+      <% }); %>
+    </div>
+
+    <script>
+      function agregarAlCarrito(productoId) {
+        fetch("/carrito/agregar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ productoId }),
+        }).then((response) => {
+          if (response.ok) {
+            alert("Producto agregado al carrito");
+          } else {
+            alert("Error al agregar el producto al carrito");
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
