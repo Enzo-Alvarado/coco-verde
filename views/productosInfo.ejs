@@ -36,7 +36,7 @@
           <img src="/image/logo navbar.png" alt="Logo Coco Verde" />
         </div>
         <div class="nav-links" id="nav-links">
-          <a class="links" href="index.html#inicio">Inicio</a>
+          <a class="links" href="/">Inicio</a>
           <a class="links" href="index.html#productos">Productos</a>
           <a class="links" href="index.html#nosotros">Nosotros</a>
           <a class="links" href="index.html#proximamente">Próximamente</a>
@@ -91,7 +91,7 @@
               <p>Talle:</p>
               <% talles.forEach((talle) => { %>
               <label>
-                <input type="radio" name="size" value="<%= talle.nombre %>" />
+                <input type="radio" name="size" value="<%= talle.talle %>" />
                 <%= talle.talle %>
               </label>
               <% }); %>
@@ -107,7 +107,7 @@
 
           <button
             class="add-to-cart"
-            onclick="agregarAlCarrito('<%= producto.id %>')"
+            onclick="verificarSesionYAgregarAlCarrito('<%= producto.id %>')"
           >
             AGREGAR AL CARRITO
           </button>
@@ -119,7 +119,7 @@
       <p>&copy; 2024 Coco Verde. Todos los derechos reservados.</p>
     </footer>
     <script>
-      function agregarAlCarrito(productoId) {
+      function verificarSesionYAgregarAlCarrito(productoId) {
         const talleSeleccionado = document.querySelector(
           'input[name="size"]:checked'
         );
@@ -130,18 +130,21 @@
           return;
         }
 
-        fetch("/carrito/agregar", {
+        fetch("/carrito/verificar", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             productoId,
             talle: talleSeleccionado.value,
             cantidad,
+            redirectUrl: window.location.pathname, // Guarda la URL actual
           }),
         })
           .then((response) => {
             if (response.ok) {
               alert("Producto agregado al carrito");
+            } else if (response.status === 401) {
+              window.location.href = "/auth"; // Redirige al login
             } else {
               alert("Error al agregar el producto al carrito");
             }

@@ -19,8 +19,6 @@
     <script defer src="/js/carritoClick.js"></script>
   </head>
   <body>
-    <!-- Navbar -->
-
     <!-- Carrito Click -->
 
     <div id="carrito" class="carrito">
@@ -28,25 +26,40 @@
         <h1>Carrito de compras</h1>
         <span id="x" class="close">×</span>
       </div>
-      <div class="productos">
-        <div class="product productoDiv">
-          <img src="/public/image/remera 1.png" alt="Producto" />
+      <div>
+        <% if (carrito.length > 0) { %> <% carrito.forEach(producto => { %>
+        <div
+          class="productos productoDiv"
+          data-producto-id="<%= producto.id %>"
+        >
+          <img src="/image/remera 1.png" alt="Producto" />
           <div class="info">
-            <h2>BLACK DRAMA (S)</h2>
+            <h2><%= producto.nombre %> (<%= producto.talle %>)</h2>
             <div class="cantidad">
               <button class="botonRestar">-</button>
-              <span class="cantidadCarrito">1</span>
+              <span class="cantidadCarrito"><%= producto.cantidad %></span>
               <button class="botonSumar">+</button>
             </div>
           </div>
-          <div class="precio">$35.000,00</div>
-          <div class="eliminar basuraIcono">🗑</div>
+          <div class="precio">$<%= producto.precio * producto.cantidad %></div>
+          <button
+            class="eliminar basuraIcono"
+            onclick="eliminarProducto('<%= producto.id %>')"
+          >
+            🗑
+          </button>
         </div>
+        <% }); %> <% } else { %>
+        <p>El carrito está vacío</p>
+        <% } %>
       </div>
       <hr />
       <div class="subtotal">
         <p>SUBTOTAL (sin envío):</p>
-        <p>$70.000,00</p>
+        <p>
+          $<%= carrito.reduce((total, producto) => total + producto.precio *
+          producto.cantidad, 0) %>
+        </p>
       </div>
       <button class="comprar">Iniciar compra</button>
     </div>
@@ -84,16 +97,16 @@
           </button>
         </div>
         <div class="logo">
-          <img src="/public/image/logo navbar.png" alt="Logo Coco Verde" />
+          <img src="/image/logo navbar.png" alt="Logo Coco Verde" />
         </div>
         <div class="nav-links" id="nav-links">
           <a class="links" href="/">Inicio</a>
           <a class="links" href="#productos">Productos</a>
           <a class="links" href="#nosotros">Nosotros</a>
           <a class="links" href="#proximamente">Próximamente</a>
-          <a class="links" href="/auth">inicio de sesion</a>
         </div>
         <div id="carritoIcono" class="cart-icon">
+          <a class="links" href="/auth"><i class="bx bx-user"></i></a>
           <i class="bx bx-cart"></i>
         </div>
       </nav>
@@ -170,5 +183,50 @@
     <footer>
       <p>&copy; 2024 Coco Verde. Todos los derechos reservados.</p>
     </footer>
+    <script>
+      async function eliminarProducto(productoId) {
+        const confirmacion = confirm(
+          "¿Estás seguro de que quieres eliminar este producto?"
+        );
+        if (!confirmacion) return;
+
+        try {
+          const response = await fetch("/eliminarCarrito/eliminar", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ productoId }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Error en la solicitud");
+          }
+
+          const result = await response.json();
+
+          if (result.success) {
+            alert(result.message);
+
+            // Buscar el elemento en el DOM
+            const productoElemento = document.querySelector(
+              `[data-producto-id="${productoId}"]`
+            );
+
+            if (productoElemento) {
+              // Si el elemento existe, eliminarlo
+              productoElemento.remove();
+            } else {
+              console.warn("El producto no se encontró en el DOM.");
+            }
+          } else {
+            alert("No se pudo eliminar el producto: " + result.message);
+          }
+        } catch (error) {
+          console.error("Error al eliminar producto:", error);
+          alert("Ocurrió un error al intentar eliminar el producto.");
+        }
+      }
+    </script>
   </body>
 </html>

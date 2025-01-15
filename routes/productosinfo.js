@@ -2,17 +2,7 @@ const express = require("express");
 const router = express.Router();
 const connection = require("../database/connection");
 
-function isAuthenticated(req, res, next) {
-  if (req.session && req.session.userId) {
-    return next();
-  }
-
-  // Guarda la URL actual para redireccionar después de iniciar sesión
-  req.session.redirectTo = req.originalUrl; // Guarda /productosinfo/:id
-  res.redirect("/auth"); // Redirige al login
-}
-
-router.get("/:id", isAuthenticated, (req, res) => {
+router.get("/:id", (req, res) => {
   const { id } = req.params;
 
   const productoQuery = "SELECT * FROM productos WHERE id = ?";

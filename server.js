@@ -11,11 +11,14 @@ const app = express();
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.json());
+// Configurar sesión
 app.use(
   session({
-    secret: "clave_secreta",
+    secret: "tu_clave_secreta", // Cambia esto a una clave segura
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
+    cookie: { secure: false }, // Cambia a true si usas HTTPS
   })
 );
 
@@ -28,6 +31,7 @@ const authRoutes = require("./routes/auth");
 const productosRoutes = require("./routes/productos");
 const productosinfoRoutes = require("./routes/productosinfo");
 const carritoRoutes = require("./routes/carrito");
+const eliminarCarritoRoutes = require("./routes/eliminarCarrito");
 const indexRoutes = require("./routes/index");
 const registroRoutes = require("./routes/registro");
 
@@ -36,6 +40,7 @@ app.use("/auth", authRoutes);
 app.use("/productos", productosRoutes);
 app.use("/productosinfo", productosinfoRoutes);
 app.use("/carrito", carritoRoutes);
+app.use("/eliminarCarrito", eliminarCarritoRoutes);
 app.use("/registro", registroRoutes);
 
 // Inicio del servidor
