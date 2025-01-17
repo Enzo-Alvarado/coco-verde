@@ -34,6 +34,7 @@ const carritoRoutes = require("./routes/carrito");
 const eliminarCarritoRoutes = require("./routes/eliminarCarrito");
 const indexRoutes = require("./routes/index");
 const registroRoutes = require("./routes/registro");
+const inicioCompraRoutes = require("./routes/inicioCompra");
 
 app.use("/", indexRoutes);
 app.use("/auth", authRoutes);
@@ -42,6 +43,7 @@ app.use("/productosinfo", productosinfoRoutes);
 app.use("/carrito", carritoRoutes);
 app.use("/eliminarCarrito", eliminarCarritoRoutes);
 app.use("/registro", registroRoutes);
+app.use("/inicioCompra", inicioCompraRoutes);
 
 // Inicio del servidor
 const PORT = process.env.PORT || 3000;
